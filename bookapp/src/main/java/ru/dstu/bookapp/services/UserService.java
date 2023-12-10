@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.dstu.bookapp.dtos.RegistrationUserDto;
+import ru.dstu.bookapp.dtos.auth.RegistrationUserDto;
 import ru.dstu.bookapp.entities.User;
+import ru.dstu.bookapp.exceptions.PasswordMismatchException;
 import ru.dstu.bookapp.repositories.UserRepository;
 
 import java.util.List;
@@ -46,12 +47,17 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public User createNewUser(RegistrationUserDto registrationUserDto) {
+    public void createNewUser(RegistrationUserDto registrationUserDto) throws Exception {
+
+        if(!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
+            throw new PasswordMismatchException("Пароли не совпадают");
+        }
+
         User user = new User();
         user.setUsername(registrationUserDto.getUsername());
         user.setEmail(registrationUserDto.getEmail());
         user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
         user.setRoles(List.of(roleService.getUserRole("ROLE_USER")));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }

@@ -8,24 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.dstu.bookapp.dtos.RegistrationUserDto;
+import ru.dstu.bookapp.dtos.auth.RegistrationUserDto;
 import ru.dstu.bookapp.services.UserService;
 
 @Controller
 public class MainController {
-    @Autowired
-    private UserService userService;
 
-    @GetMapping("/registration")
-    public String createBookForm(Model model) {
-        return "auth/registration";
-    }
-    @PostMapping("/registration")
-    public String createBook(@ModelAttribute RegistrationUserDto registrationUserDto) {
-        userService.createNewUser(registrationUserDto);
-        return "redirect:/main/unsecured";
-    }
 
     @GetMapping("/secured")
     public String securedData(Model model) {

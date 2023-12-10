@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bookapp_database
+    username: postgres
+    password: 2529
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.temp.use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+thymeleaf:
+  enabled: true
+  prefix: classpath:/templates/
+  suffix: .html
+  mode: HTML
+
