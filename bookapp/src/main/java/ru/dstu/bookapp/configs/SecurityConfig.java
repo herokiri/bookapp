@@ -31,17 +31,16 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .permitAll()
-//                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/secured").authenticated()
                         .anyRequest().permitAll()
-                ).formLogin(withDefaults());
+                )
+                .formLogin(form -> form
+                        .loginPage("/auth/login").permitAll()
+                        );
         return http.build();
     }
 
